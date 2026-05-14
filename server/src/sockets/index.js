@@ -2,6 +2,8 @@ const { Server } = require("socket.io");
 const { verifyToken } = require("../utils/token");
 const User = require("../models/User");
 
+const { clientUrl } = require("../utils/corsOrigins");
+
 let io;
 
 function getIO() {
@@ -9,11 +11,9 @@ function getIO() {
 }
 
 function initSocket(server) {
-  const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-
   io = new Server(server, {
     cors: {
-      origin: clientUrl,
+      origin: [clientUrl, /^https:\/\/[\w-]+\.vercel\.app$/],
       credentials: true,
     },
   });

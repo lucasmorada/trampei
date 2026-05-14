@@ -89,6 +89,19 @@ cd server && npm start
 - Avaliações após serviço concluído
 - Dashboard, recomendações (tags + localização), modo escuro, skeletons, toasts, página 404
 
+## Deploy na Vercel
+
+1. **Root Directory:** em **Settings → General → Root Directory**, use **`client`**. Na raiz do monorepo não há `package.json` do Next.
+2. **Variáveis de ambiente** (Settings → Environment Variables):
+   - `NEXT_PUBLIC_API_URL` — URL pública da API com sufixo `/api`, ex. `https://seu-backend.onrender.com/api`.
+   - `NEXT_PUBLIC_SOCKET_URL` — mesma origem **sem** `/api`, ex. `https://seu-backend.onrender.com`.
+   - Opcional: `NEXT_PUBLIC_SITE_URL` — URL do app na Vercel, ex. `https://trampei.vercel.app`.
+3. **Não** defina `STATIC_EXPORT=true` na Vercel (ativa export estático e quebra `/perfil/[id]` e `/servicos/[id]`).
+4. **Não** defina `NEXT_PUBLIC_BASE_PATH` na Vercel (é só para GitHub Pages).
+5. **Backend:** no servidor (Render/Railway/…), `CLIENT_URL` deve ser a URL do frontend na Vercel. O código aceita também qualquer `*.vercel.app` em CORS (útil para previews).
+
+Arquivo [`client/vercel.json`](client/vercel.json) deixa o build explícito. Se o deploy falhar por “não achou Next”, verifique o Root Directory.
+
 ## GitHub Pages (`*.github.io/Trampei/`)
 
 O GitHub Pages **só hospeda arquivos estáticos**. Ele **não executa** Node/Express nem MongoDB. Por isso, ao abrir [https://lucasmorada.github.io/Trampei/](https://lucasmorada.github.io/Trampei/) sem configurar o deploy, costuma aparecer só o README: não existe um `index.html` gerado pelo Next na raiz do repositório.
@@ -103,7 +116,7 @@ O GitHub Pages **só hospeda arquivos estáticos**. Ele **não executa** Node/Ex
 
    Opcional: em **Settings → Secrets and variables → Actions**, crie segredos `NEXT_PUBLIC_API_URL` e `NEXT_PUBLIC_SOCKET_URL` apontando para a sua API pública (senão o site abre, mas login/feed só funcionam se a API estiver acessível na URL configurada no build).
 
-**Limitação do export estático:** rotas como `/perfil/[id]` e `/servicos/[id]` só têm página HTML pré-gerada para o id `demo` (exigência do `output: 'export'`). Para qualquer ID em produção, use Vercel ou outro host Node.
+**Limitação do export estático:** o workflow cria layouts mínimos só no CI para gerar `/perfil/demo` e `/servicos/demo`. Para o app completo com qualquer ID, use a Vercel (sem `STATIC_EXPORT`).
 
 ## Licença
 

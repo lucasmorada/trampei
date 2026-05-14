@@ -16,15 +16,15 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const recommendationRoutes = require("./routes/recommendationRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 
-const app = express();
+const { corsOriginCallback } = require("./utils/corsOrigins");
 
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
+const app = express();
 
 app.set("trust proxy", 1);
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(
   cors({
-    origin: clientUrl,
+    origin: corsOriginCallback,
     credentials: true,
   })
 );
