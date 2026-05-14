@@ -89,6 +89,22 @@ cd server && npm start
 - Avaliações após serviço concluído
 - Dashboard, recomendações (tags + localização), modo escuro, skeletons, toasts, página 404
 
+## GitHub Pages (`*.github.io/Trampei/`)
+
+O GitHub Pages **só hospeda arquivos estáticos**. Ele **não executa** Node/Express nem MongoDB. Por isso, ao abrir [https://lucasmorada.github.io/Trampei/](https://lucasmorada.github.io/Trampei/) sem configurar o deploy, costuma aparecer só o README: não existe um `index.html` gerado pelo Next na raiz do repositório.
+
+### O que fazer (duas opções)
+
+1. **Recomendado para o app completo (API + rotas dinâmicas):** use **[Vercel](https://vercel.com)** (frontend) e **[Render](https://render.com)** / **[Railway](https://railway.app)** (backend). Conecte o repositório [lucasmorada/Trampei](https://github.com/lucasmorada/Trampei) e defina as variáveis de ambiente (`NEXT_PUBLIC_API_URL`, `MONGODB_URI`, etc.).
+
+2. **Só demonstração estática no GitHub Pages:** o workflow [`.github/workflows/github-pages.yml`](.github/workflows/github-pages.yml) gera o export estático do Next com `basePath: /Trampei` e publica na GitHub Pages.
+
+   No repositório GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions** (não “Deploy from a branch”).
+
+   Opcional: em **Settings → Secrets and variables → Actions**, crie segredos `NEXT_PUBLIC_API_URL` e `NEXT_PUBLIC_SOCKET_URL` apontando para a sua API pública (senão o site abre, mas login/feed só funcionam se a API estiver acessível na URL configurada no build).
+
+**Limitação do export estático:** rotas como `/perfil/[id]` e `/servicos/[id]` só têm página HTML pré-gerada para o id `demo` (exigência do `output: 'export'`). Para qualquer ID em produção, use Vercel ou outro host Node.
+
 ## Licença
 
 MIT
