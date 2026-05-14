@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f4f5;
+  --foreground: #0a0a0a;
+  --trampei-navy: #0a1628;
+  --trampei-blue: #1e3a8a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: #bfdbfe;
+  color: #0a1628;
+}
+
+.dark ::selection {
+  background: #1e3a8a;
+  color: #f8fafc;
+}
